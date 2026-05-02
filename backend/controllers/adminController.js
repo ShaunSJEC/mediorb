@@ -50,31 +50,36 @@ const addDoctor = async (req, res) => {
         const hashedPassword = await bcrypt.hash(password, salt);
 
         // upload image to cloudinary
-        const imageUpload = await cloudinary.uploader.upload_stream(
+        cloudinary.uploader.upload_stream(
             { resource_type: "image" },
             async (error, result) => {
                 if (error) {
                     return res.json({ success: false, message: error.message });
                 }
 
-                const doctorData = {
-                    name,
-                    email,
-                    image: result.secure_url,
-                    password: hashedPassword,
-                    speciality,
-                    degree,
-                    experience,
-                    about,
-                    fees,
-                    address: JSON.parse(address),
-                    date: Date.now()
-                };
+                try {
+                    const doctorData = {
+                        name,
+                        email,
+                        image: result.secure_url,
+                        password: hashedPassword,
+                        speciality,
+                        degree,
+                        experience,
+                        about,
+                        fees,
+                        address: JSON.parse(address),
+                        date: Date.now()
+                    };
 
-                const newDoctor = new doctorModel(doctorData);
-                await newDoctor.save();
+                    const newDoctor = new doctorModel(doctorData);
+                    await newDoctor.save();
 
-                res.json({ success: true, message: "Doctor Added" });
+                    res.json({ success: true, message: "Doctor Added" });
+                } catch (err) {
+                    console.log(err);
+                    res.json({ success: false, message: err.message });
+                }
             }
         ).end(imageFile.buffer);
 

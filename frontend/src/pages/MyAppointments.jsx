@@ -49,9 +49,9 @@ const MyAppointments = () => {
     }
   }
 
-  const initPay = (order) => {
+  const initPay = (order, key) => {
     const options = {
-      key: import.meta.env.VITE_RAZORPAY_KEY_ID,
+      key: key || import.meta.env.VITE_RAZORPAY_KEY_ID,
       amount: order.amount,
       currency: order.currency,
       name: 'Appointment Payment',
@@ -59,8 +59,19 @@ const MyAppointments = () => {
       order_id: order.id,
       receipt: order.receipt,
       handler: async (response) => {
-        console.log(response)
-        // verify payment API call here
+        try {
+          const token = await getToken()
+          const { data } = await axios.post(backendUrl + '/api/user/verify-razorpay', response, { headers: { token } })
+          if (data.success) {
+            toast.success(data.message)
+            getUserAppointments()
+          } else {
+            toast.error(data.message)
+          }
+        } catch (error) {
+          console.log(error)
+          toast.error(error.message)
+        }
       }
     }
     const rzp = new window.Razorpay(options)
@@ -68,8 +79,20 @@ const MyAppointments = () => {
   }
 
   const appointmentRazorpay = async (appointmentId) => {
-    // Razorpay flow not fully implemented in backend yet, but here is the frontend skeleton
-    toast.info("Payment integration coming soon")
+    try {
+      const token = await getToken()
+      const { data } = await axios.post(backendUrl + '/api/user/payment-razorpay', { appointmentId }, { headers: { token } })
+
+      if (data.success) {
+        initPay(data.order, data.key)
+      } else {
+        toast.error(data.message)
+      }
+
+    } catch (error) {
+      console.log(error)
+      toast.error(error.message)
+    }
   }
 
   useEffect(() => {
@@ -92,6 +115,7 @@ const MyAppointments = () => {
               <p className='text-xs'>{item.docData.address.line1}</p>
               <p className='text-xs'>{item.docData.address.line2}</p>
               <p className='text-xs mt-1'><span className='text-sm text-neutral-700 font-medium'>Date & Time:</span> {slotDateFormat(item.slotDate)} |  {item.slotTime}</p>
+              {!item.cancelled && !item.payment && !item.isCompleted && <p className='text-xs text-orange-500 font-medium mt-1'>Payment: Pending (Cash at Clinic)</p>}
             </div>
             <div></div>
             <div className='flex flex-col gap-2 justify-end'>
