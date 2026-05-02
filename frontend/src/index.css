@@ -1,0 +1,14 @@
+@import "tailwindcss";
+
+@theme {
+  --color-primary: #5F6FFF;
+  --grid-template-columns-auto: repeat(auto-fill, minmax(200px, 1fr));
+}
+
+button {
+    @apply transition-all duration-300;
+}
+
+::-webkit-scrollbar {
+    display: none;
+}
