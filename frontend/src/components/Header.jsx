@@ -1,5 +1,6 @@
 import React from 'react'
 import { ArrowRight } from 'lucide-react'
+import heroImg from '../assets/hero.png'
 
 const Header = () => {
     return (
@@ -16,9 +17,8 @@ const Header = () => {
                 </a>
             </div>
             <div className='md:w-1/2 relative'>
-                {/* Hero image placeholder or CSS shape */}
-                <div className='w-full h-64 md:h-full bg-white/10 rounded-t-lg mt-10 md:mt-0 flex items-end justify-center overflow-hidden'>
-                     <div className='w-3/4 h-3/4 bg-white/20 rounded-t-full'></div>
+                <div className='w-full h-64 md:h-full mt-10 md:mt-0 flex items-end justify-center overflow-hidden'>
+                    <img src={heroImg} alt='Hero image' className='object-cover w-full h-auto max-h-[80%] rounded-lg drop-shadow-2xl' />
                 </div>
             </div>
         </div>

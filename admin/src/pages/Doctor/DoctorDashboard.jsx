@@ -16,52 +16,58 @@ const DoctorDashboard = () => {
 
   return dashData && (
     <div className='m-5'>
-      <div className='flex flex-wrap gap-3'>
-        <div className='flex items-center gap-2 bg-white p-4 min-w-52 rounded border-2 border-gray-100 cursor-pointer hover:scale-105 transition-all'>
-          <Briefcase size={40} className='text-primary' />
+      <div className='flex flex-wrap gap-4'>
+        <div className='flex items-center gap-4 bg-white p-6 min-w-52 rounded-xl border border-gray-100 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300'>
+          <div className='p-3 bg-primary/10 rounded-full'>
+            <Briefcase size={32} className='text-primary' />
+          </div>
           <div>
-            <p className='text-xl font-semibold text-gray-600'>{currency} {dashData.earnings}</p>
-            <p className='text-gray-400'>Earnings</p>
+            <p className='text-2xl font-bold text-gray-800'>{currency} {dashData.earnings}</p>
+            <p className='text-sm text-gray-500 font-medium uppercase tracking-wider'>Earnings</p>
           </div>
         </div>
-        <div className='flex items-center gap-2 bg-white p-4 min-w-52 rounded border-2 border-gray-100 cursor-pointer hover:scale-105 transition-all'>
-          <CalendarDays size={40} className='text-primary' />
+        <div className='flex items-center gap-4 bg-white p-6 min-w-52 rounded-xl border border-gray-100 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300'>
+          <div className='p-3 bg-primary/10 rounded-full'>
+            <CalendarDays size={32} className='text-primary' />
+          </div>
           <div>
-            <p className='text-xl font-semibold text-gray-600'>{dashData.appointments}</p>
-            <p className='text-gray-400'>Appointments</p>
+            <p className='text-2xl font-bold text-gray-800'>{dashData.appointments}</p>
+            <p className='text-sm text-gray-500 font-medium uppercase tracking-wider'>Appointments</p>
           </div>
         </div>
-        <div className='flex items-center gap-2 bg-white p-4 min-w-52 rounded border-2 border-gray-100 cursor-pointer hover:scale-105 transition-all'>
-          <UserCheck size={40} className='text-primary' />
+        <div className='flex items-center gap-4 bg-white p-6 min-w-52 rounded-xl border border-gray-100 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300'>
+          <div className='p-3 bg-primary/10 rounded-full'>
+            <UserCheck size={32} className='text-primary' />
+          </div>
           <div>
-            <p className='text-xl font-semibold text-gray-600'>{dashData.patients}</p>
-            <p className='text-gray-400'>Patients</p>
+            <p className='text-2xl font-bold text-gray-800'>{dashData.patients}</p>
+            <p className='text-sm text-gray-500 font-medium uppercase tracking-wider'>Patients</p>
           </div>
         </div>
       </div>
 
-      <div className='bg-white mt-10'>
-        <div className='flex items-center gap-2.5 px-4 py-4 mt-10 rounded-t border'>
-          <ListOrdered size={20} />
-          <p className='font-semibold'>Latest Bookings</p>
+      <div className='bg-white mt-10 rounded-xl shadow-sm border border-gray-100 overflow-hidden'>
+        <div className='flex items-center gap-2.5 px-6 py-5 bg-gray-50 border-b'>
+          <ListOrdered size={20} className='text-gray-600' />
+          <p className='font-bold text-gray-800 text-lg'>Latest Bookings</p>
         </div>
 
-        <div className='pt-4 border border-t-0'>
+        <div className='divide-y divide-gray-100'>
           {
             dashData.latestAppointments.map((item, index) => (
-              <div className='flex items-center px-6 py-3 gap-3 hover:bg-gray-100' key={index}>
-                <img className='rounded-full w-10' src={item.userData.image} alt="" />
-                <div className='flex-1 text-sm'>
-                  <p className='text-gray-800 font-medium'>{item.userData.name}</p>
-                  <p className='text-gray-600'>{slotDateFormat(item.slotDate)}</p>
+              <div className='flex items-center px-6 py-4 gap-4 hover:bg-gray-50 transition-colors' key={index}>
+                <img className='rounded-full w-12 h-12 object-cover border-2 border-primary/20' src={item.userData.image} alt="" />
+                <div className='flex-1'>
+                  <p className='text-gray-900 font-semibold'>{item.userData.name}</p>
+                  <p className='text-gray-500 text-sm mt-0.5'>{slotDateFormat(item.slotDate)}</p>
                 </div>
                 {item.cancelled 
-                ? <p className='text-red-400 text-xs font-medium'>Cancelled</p> 
+                ? <span className='px-3 py-1 bg-red-100 text-red-600 rounded-full text-xs font-bold uppercase tracking-wider'>Cancelled</span>
                 : item.isCompleted 
-                  ? <p className='text-green-500 text-xs font-medium'>Completed</p>
-                  : <div className='flex'>
-                      <p onClick={() => cancelAppointment(item._id)} className='text-red-500 text-xs font-medium cursor-pointer p-2'>Cancel</p>
-                      <p onClick={() => completeAppointment(item._id)} className='text-green-500 text-xs font-medium cursor-pointer p-2'>Complete</p>
+                  ? <span className='px-3 py-1 bg-green-100 text-green-600 rounded-full text-xs font-bold uppercase tracking-wider'>Completed</span>
+                  : <div className='flex gap-2'>
+                      <button onClick={() => cancelAppointment(item._id)} className='text-red-500 text-sm font-medium cursor-pointer hover:bg-red-50 px-3 py-1.5 rounded-lg transition-colors'>Cancel</button>
+                      <button onClick={() => completeAppointment(item._id)} className='text-green-500 text-sm font-medium cursor-pointer hover:bg-green-50 px-3 py-1.5 rounded-lg transition-colors'>Complete</button>
                     </div>
               }
               </div>

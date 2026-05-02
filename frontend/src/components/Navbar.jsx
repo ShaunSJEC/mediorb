@@ -9,16 +9,16 @@ const Navbar = () => {
         <div className='flex items-center justify-between text-sm py-4 mb-5 border-b border-b-gray-400'>
             <p onClick={() => navigate('/')} className='text-2xl font-bold text-primary cursor-pointer'>MediOrb</p>
             <ul className='hidden md:flex items-start gap-5 font-medium'>
-                <NavLink to='/'>
+                <NavLink to='/' className={({isActive}) => isActive ? "text-primary border-b-2 border-primary" : "hover:text-primary transition-colors"}>
                     <li className='py-1'>HOME</li>
                 </NavLink>
-                <NavLink to='/doctors'>
+                <NavLink to='/doctors' className={({isActive}) => isActive ? "text-primary border-b-2 border-primary" : "hover:text-primary transition-colors"}>
                     <li className='py-1'>ALL DOCTORS</li>
                 </NavLink>
-                <NavLink to='/about'>
+                <NavLink to='/about' className={({isActive}) => isActive ? "text-primary border-b-2 border-primary" : "hover:text-primary transition-colors"}>
                     <li className='py-1'>ABOUT</li>
                 </NavLink>
-                <NavLink to='/contact'>
+                <NavLink to='/contact' className={({isActive}) => isActive ? "text-primary border-b-2 border-primary" : "hover:text-primary transition-colors"}>
                     <li className='py-1'>CONTACT</li>
                 </NavLink>
             </ul>
